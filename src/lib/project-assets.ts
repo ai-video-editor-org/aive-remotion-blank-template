@@ -1,7 +1,9 @@
 "use client";
 
+import { staticFile } from "remotion";
+
 const GOOGLE_STORAGE_HOST = "storage.googleapis.com";
-const HYDRATED_ASSET_PREFIX = "/__project_assets__";
+const HYDRATED_ASSET_PREFIX = "__project_assets__";
 
 function encodePath(pathname: string): string {
   return pathname
@@ -18,7 +20,7 @@ export function getHydratedAssetCandidate(src: string): string | null {
       return null;
     }
 
-    return `${HYDRATED_ASSET_PREFIX}/${encodePath(url.pathname)}`;
+    return staticFile(`${HYDRATED_ASSET_PREFIX}/${encodePath(url.pathname)}`);
   } catch {
     return null;
   }
