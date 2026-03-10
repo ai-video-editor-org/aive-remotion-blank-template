@@ -1,58 +1,44 @@
 import { fontFamily, loadFont } from "@remotion/google-fonts/Inter";
-import {
-  AbsoluteFill,
-  Sequence,
-  spring,
-  useCurrentFrame,
-  useVideoConfig,
-} from "remotion";
+import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { z } from "zod";
 import { CompositionProps } from "../../../types/constants";
-import { NextLogo } from "./NextLogo";
-import { Rings } from "./Rings";
-import { TextFade } from "./TextFade";
 
 loadFont("normal", {
   subsets: ["latin"],
   weights: ["400", "700"],
 });
-export const Main = ({ title }: z.infer<typeof CompositionProps>) => {
+
+export const Main = ({ title, emoji }: z.infer<typeof CompositionProps>) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const transitionStart = 2 * fps;
-  const transitionDuration = 1 * fps;
-
-  const logoOut = spring({
-    fps,
-    frame,
-    config: {
-      damping: 200,
-    },
-    durationInFrames: transitionDuration,
-    delay: transitionStart,
+  const rise = interpolate(frame, [0, 18], [40, 0], {
+    extrapolateRight: "clamp",
+  });
+  const fadeIn = interpolate(frame, [0, 18], [0, 1], {
+    extrapolateRight: "clamp",
   });
 
   return (
-    <AbsoluteFill className="bg-white">
-      <Sequence durationInFrames={transitionStart + transitionDuration}>
-        <Rings outProgress={logoOut}></Rings>
-        <AbsoluteFill className="justify-center items-center">
-          <NextLogo outProgress={logoOut}></NextLogo>
-        </AbsoluteFill>
-      </Sequence>
-      <Sequence from={transitionStart + transitionDuration / 2}>
-        <TextFade>
-          <h1
-            className="text-[70px] font-bold"
-            style={{
-              fontFamily,
-            }}
-          >
-            {title}
-          </h1>
-        </TextFade>
-      </Sequence>
+    <AbsoluteFill
+      style={{
+        background:
+          "radial-gradient(circle at top, rgba(255,255,255,0.22), transparent 36%), linear-gradient(180deg, #111827 0%, #030712 100%)",
+        color: "white",
+        fontFamily,
+      }}
+      className="items-center justify-center"
+    >
+      <div
+        style={{
+          transform: `translateY(${rise}px)`,
+          opacity: fadeIn,
+        }}
+        className="flex flex-col items-center gap-8"
+      >
+        <div className="text-[180px] leading-none">{emoji}</div>
+        <div className="rounded-full border border-white/15 bg-white/8 px-8 py-3 text-[28px] font-medium tracking-[-0.03em]">
+          {title}
+        </div>
+      </div>
     </AbsoluteFill>
   );
 };

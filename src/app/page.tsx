@@ -2,63 +2,44 @@
 
 import { Player } from "@remotion/player";
 import type { NextPage } from "next";
-import { useMemo, useState } from "react";
-import { z } from "zod";
 import {
-  CompositionProps,
   defaultMyCompProps,
   DURATION_IN_FRAMES,
   VIDEO_FPS,
   VIDEO_HEIGHT,
   VIDEO_WIDTH,
 } from "../../types/constants";
-import { RenderControls } from "../components/RenderControls";
-import { Spacing } from "../components/Spacing";
-import { Tips } from "../components/Tips";
 import { Main } from "../remotion/MyComp/Main";
 
 const Home: NextPage = () => {
-  const [text, setText] = useState<string>(defaultMyCompProps.title);
-
-  const inputProps: z.infer<typeof CompositionProps> = useMemo(() => {
-    return {
-      title: text,
-    };
-  }, [text]);
-
   return (
-    <div>
-      <div className="max-w-screen-md m-auto mb-5 px-4">
-        <div className="overflow-hidden rounded-geist shadow-[0_0_200px_rgba(0,0,0,0.15)] mb-10 mt-16">
+    <main className="min-h-screen bg-[#020617] px-6 py-10 text-white">
+      <div className="mx-auto flex max-w-[420px] flex-col gap-5">
+        <div>
+          <p className="text-xs uppercase tracking-[0.24em] text-white/45">
+            AI Video Editor
+          </p>
+          <h1 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">
+            Blank starter
+          </h1>
+        </div>
+        <div className="overflow-hidden rounded-[28px] border border-white/10 shadow-[0_30px_120px_rgba(0,0,0,0.45)]">
           <Player
             component={Main}
-            inputProps={inputProps}
+            inputProps={defaultMyCompProps}
             durationInFrames={DURATION_IN_FRAMES}
             fps={VIDEO_FPS}
             compositionHeight={VIDEO_HEIGHT}
             compositionWidth={VIDEO_WIDTH}
-            style={{
-              // Can't use tailwind class for width since player's default styles take presedence over tailwind's,
-              // but not over inline styles
-              width: "100%",
-            }}
+            style={{ width: "100%" }}
             controls
             autoPlay
             loop
+            acknowledgeRemotionLicense
           />
         </div>
-        <RenderControls
-          text={text}
-          setText={setText}
-          inputProps={inputProps}
-        ></RenderControls>
-        <Spacing></Spacing>
-        <Spacing></Spacing>
-        <Spacing></Spacing>
-        <Spacing></Spacing>
-        <Tips></Tips>
       </div>
-    </div>
+    </main>
   );
 };
 
