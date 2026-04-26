@@ -32,10 +32,10 @@ export const Main = ({ title, emoji }: z.infer<typeof CompositionProps>) => {
           transform: `translateY(${rise}px)`,
           opacity: fadeIn,
         }}
-        className="flex flex-col items-center gap-8"
+        className="flex flex-col items-center gap-4"
       >
-        <div className="text-[180px] leading-none">{emoji}</div>
-        <div className="rounded-full border border-white/15 bg-white/8 px-8 py-3 text-[28px] font-medium tracking-[-0.03em]">
+        <div className="text-[72px] leading-none">{emoji}</div>
+        <div className="rounded-full border border-white/15 bg-white/8 px-5 py-2 text-[18px] font-medium tracking-[-0.03em]">
           {title}
         </div>
       </div>
